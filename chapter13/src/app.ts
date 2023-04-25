@@ -1,26 +1,55 @@
 import axios from "axios";
+import { config } from "./apikey.js";
+// import fs from "fs";
 
-import { GOOGLE_API_KEY } from "./dev";
+// //파일 읽어오기(api키 숨기기 위해)
+// const fileName: string = "/./apikey.js";
+// let fileContent = fs.readFileSync(fileName);
+// console.log(fileContent);
 
 const form = document.querySelector("form")!;
 const addressInput = document.getElementById("address")! as HTMLInputElement;
 
+declare let google: any;
+
+type GoogleGeocodingResponse = {
+  results: { geometry: { location: { lat: number; lng: number } } }[];
+  status: "OK" | "ZERO_RESULTS";
+};
 function searchAddressHandler(event: Event) {
   event.preventDefault();
   //문자인 주소 입력값을 호환되게 변환하기 encodeURI()
   const enteredAddress = addressInput.value;
 
+  //응답타입 추가하기 <{ results: { geometry: { location: { lat: number; lng: number } } }[]; }>
   axios
-    .get(
+    .get<GoogleGeocodingResponse>(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(
         enteredAddress
-      )}&key=${GOOGLE_API_KEY}
-  `
+      )}&key=${config.apikey}`
     )
+
     .then((response) => {
+      if (response.data.status !== "OK") {
+        throw new Error("Could not fetch location!");
+      }
+
       console.log(response);
+      const coordinates = response.data.results[0].geometry.location;
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: coordinates,
+        zoom: 8,
+      });
+
+      //marker추가하기
+      new google.maps.Marker({
+        map: map,
+        position: coordinates,
+        title: "Uluru",
+      });
     })
     .catch((err) => {
+      alert(err.message);
       console.log(err);
     });
 }
