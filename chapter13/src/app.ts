@@ -10,7 +10,9 @@ import { config } from "./apikey.js";
 const form = document.querySelector("form")!;
 const addressInput = document.getElementById("address")! as HTMLInputElement;
 
-declare let google: any;
+//google 변수에 대한 타입 any로 선언
+// declare let google: any;
+//npm install --save-dev @types/googlemaps로 구글 맵스 타입 설정 가능
 
 type GoogleGeocodingResponse = {
   results: { geometry: { location: { lat: number; lng: number } } }[];
@@ -36,9 +38,9 @@ function searchAddressHandler(event: Event) {
 
       console.log(response);
       const coordinates = response.data.results[0].geometry.location;
-      const map = new google.maps.Map(document.getElementById("map"), {
+      const map = new google.maps.Map(document.getElementById("map")!, {
         center: coordinates,
-        zoom: 8,
+        zoom: 16,
       });
 
       //marker추가하기
