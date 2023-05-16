@@ -3,8 +3,6 @@
 //   console.log(constructor);
 // }
 
-import { createDecipheriv } from "crypto";
-
 // function Logger(target: Function) {
 //   return function (constructor: Function) {
 //     console.log("Logging....");
@@ -209,7 +207,9 @@ function Required(target: any, propName: string) {
   //target.constructor는
   //인스턴스의 프로토타입의 constructor로
   //생성자 함수를 가리킴
+
   registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
     [propName]: ["required"],
   };
   //propName은 validator를 키로 추가하려는 프로퍼티
@@ -217,6 +217,7 @@ function Required(target: any, propName: string) {
 
 function PositiveNumber(target: any, propName: string) {
   registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
     [propName]: ["positive"],
   };
 }
@@ -226,14 +227,14 @@ function validate(obj: any) {
   if (!objValidatorConfig) {
     return true;
   }
-
+  let isValid;
   for (const prop in objValidatorConfig) {
     for (const validator of objValidatorConfig[prop]) {
       switch (validator) {
         case "required":
-          return !!obj[prop];
+          return isValid && !!obj[prop];
         case "positive":
-          return obj[prop] > 0;
+          return isValid && obj[prop] > 0;
       }
     }
   }

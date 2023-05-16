@@ -138,7 +138,7 @@ function createCourseGoal(
 //Type 'Partial<CourseGoal>' is not assignable to type 'CourseGoal'.
 //return할 시점에 CourseGoal로 형변환을 할 수 있기 때문.
 
-//Ready only type
+//Read only type
 
 const names: Readonly<string[]> = ["Jane", "coding"];
 

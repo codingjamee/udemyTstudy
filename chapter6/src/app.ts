@@ -127,6 +127,8 @@ type Animal = Bird | Horse;
 //   // above log can't be. because flying speed isn't always be.
 // }
 
+//구별된 유니언
+
 //we can be do this:
 //1. add type property to every interfaces,
 //2. add switch statement
