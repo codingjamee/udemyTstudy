@@ -7,6 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Component } from "./base-component.js";
 import { Autobind } from "../decorator/autobind.js";
 export class ProjectItem extends Component {
+    constructor(hostId, project) {
+        super("single-project", hostId, false, project.id);
+        this.project = project;
+        this.configure();
+        this.renderContent();
+    }
     get persons() {
         if (this.project.people === 1) {
             return " 1 person";
@@ -14,12 +20,6 @@ export class ProjectItem extends Component {
         else {
             return `${this.project.people} persons`;
         }
-    }
-    constructor(hostId, project) {
-        super("single-project", hostId, false, project.id);
-        this.project = project;
-        this.configure();
-        this.renderContent();
     }
     dragStartHandler(event) {
         event.dataTransfer.setData("text/plain", this.project.id);
