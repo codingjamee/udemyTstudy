@@ -48,4 +48,5 @@ module.exports = {
     extensions: [".ts", ".js"],
   },
   plugins: [new CleanPlugin.CleanWebpackPlugin()],
+  //새로운 출력이 쓰여지기 전에 삭제하는 플러그인
 };
